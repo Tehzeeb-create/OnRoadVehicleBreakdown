@@ -40,16 +40,20 @@ class SignupActivity : AppCompatActivity() {
         spinnerUserRole.adapter = adapter
 
         buttonRegister.setOnClickListener {
-            val username = editTextUsername.text.toString().trim()
+            val email = editTextUsername.text.toString().trim()
             val password = editTextPassword.text.toString()
             val confirmPassword = editTextConfirmPassword.text.toString()
             val selectedUserRole = spinnerUserRole.selectedItem.toString()
 
-
+            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                // Display an error message if either email or password is empty
+                Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (password == confirmPassword ) {
                 // Create a new user with email and password using Firebase Authentication
-                auth.createUserWithEmailAndPassword(username, password)
+                auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             // Registration successful

@@ -1,14 +1,52 @@
 {
   "project_info": {
-    "project_number": "337464516454",
-    "firebase_url": "https://onroadvehiclebreakdown-ef7ca-default-rtdb.firebaseio.com",
-    "project_id": "onroadvehiclebreakdown-ef7ca",
-    "storage_bucket": "onroadvehiclebreakdown-ef7ca.appspot.com"
+    "project_number": "299544280265",
+    "firebase_url": "https://facedec-2532e-default-rtdb.firebaseio.com",
+    "project_id": "facedec-2532e",
+    "storage_bucket": "facedec-2532e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:337464516454:android:a636783f86d6a8ef3f72a7",
+        "mobilesdk_app_id": "1:299544280265:android:51446cca55ca5aafff2118",
+        "android_client_info": {
+          "package_name": "com.example.facedetectionapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkXOvzVCZnKs-LIm7GbOUs79iBo7cRHXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299544280265:android:cf0a1fcfb22a92e9ff2118",
+        "android_client_info": {
+          "package_name": "com.example.firebaseregistration"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkXOvzVCZnKs-LIm7GbOUs79iBo7cRHXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299544280265:android:3389e03d79405739ff2118",
         "android_client_info": {
           "package_name": "com.example.onroadvehiclebreakdown"
         }
@@ -16,7 +54,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAvX9YPTugf3CXomDVRZWlse_g1sZvClyU"
+          "current_key": "AIzaSyAkXOvzVCZnKs-LIm7GbOUs79iBo7cRHXI"
         }
       ],
       "services": {

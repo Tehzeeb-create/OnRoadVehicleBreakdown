@@ -1,26 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    tools:context=".CustomerDashboardActivity">
 
-    <TextView
-        android:id="@+id/customer_dashboard_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Customer Dashboard"
-        android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"/>
-
-
-    <Button
-        android:id="@+id/logout_button"
+    <!-- Dropdown Section -->
+    <RelativeLayout
+        android:id="@+id/dropdownSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/customer_dashboard_textView"
-        android:text="Logout"
-        android:layout_marginTop="16dp" />
+        android:layout_alignParentTop="true">
 
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name" />
 
+        <EditText
+            android:id="@+id/phoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameEditText"
+            android:hint="Phone Number" />
+
+        <EditText
+            android:id="@+id/carEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/phoneEditText"
+            android:hint="Car Number" />
+
+        <EditText
+            android:id="@+id/addressEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/carEditText"
+            android:hint="Address" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addressEditText"
+            android:text="Save"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <!-- Map Section -->
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/dropdownSection" />
+
+    <!-- SOS Section -->
+    <RelativeLayout
+        android:id="@+id/sosSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/sosButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SOS"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/closestPersonTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/sosButton"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 </RelativeLayout>
