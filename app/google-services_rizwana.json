@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "337464516454",
+    "firebase_url": "https://onroadvehiclebreakdown-ef7ca-default-rtdb.firebaseio.com",
+    "project_id": "onroadvehiclebreakdown-ef7ca",
+    "storage_bucket": "onroadvehiclebreakdown-ef7ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337464516454:android:a636783f86d6a8ef3f72a7",
+        "android_client_info": {
+          "package_name": "com.example.onroadvehiclebreakdown"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvX9YPTugf3CXomDVRZWlse_g1sZvClyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
