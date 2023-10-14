@@ -28,13 +28,13 @@ class User {
         this.carNumber = carNumber
         this.address = address
     }
-    constructor(
-        email: String?,
-        password: String?,
-        selectedUserRole: String?,
-    ) {
-        this.email = email
-        this.password = password
-        this.selectedUserRole = selectedUserRole
-    }
+//    constructor(
+//        email: String?,
+//        password: String?,
+//        selectedUserRole: String?,
+//    ) {
+//        this.email = email
+//        this.password = password
+//        this.selectedUserRole = selectedUserRole
+//    }
 }

@@ -12,7 +12,7 @@ import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var auth: FirebaseAuth? = null // Change to nullable to avoid nullexception
+    private var auth: FirebaseAuth? = null
     private lateinit var database: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference
 

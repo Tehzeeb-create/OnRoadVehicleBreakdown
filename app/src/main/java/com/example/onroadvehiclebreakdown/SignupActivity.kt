@@ -67,7 +67,7 @@ class SignupActivity : AppCompatActivity() {
                                 val usersRef = database.reference.child("users")
 
                                 // Create a user object with email and password
-                                val userData = User(email, password , selectedUserRole)
+                                val userData = User(email, password , selectedUserRole, null , null, null , null)
 
                                 // Set user data under the user's ID
                                 usersRef.child(userId).setValue(userData)
