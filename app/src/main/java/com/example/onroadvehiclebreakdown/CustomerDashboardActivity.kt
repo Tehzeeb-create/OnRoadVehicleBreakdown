@@ -50,6 +50,7 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
 
     private val defaultLocation = LatLng(37.7749, -122.4194)
 
+    private val userLocation = LatLng(33.000, 77.000)
 
 
 
@@ -101,6 +102,7 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
                         val userData = dataSnapshot.getValue(User::class.java)
 
                         userData?.let { user ->
+
                             val updatedUser = User(
                                 email = user.email,
                                 password = user.password,
@@ -108,7 +110,8 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
                                 name = name,
                                 phone = phone,
                                 carNumber = carNumber,
-                                address = address
+                                address = address,
+                                location = userLocation
                             )
 
                             // Update the user's data in the database
@@ -173,7 +176,8 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun updateUserLocationOnMap() {
+
+    public fun updateUserLocationOnMap() {
         // Check for location permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             val locationResult: Task<Location> = fusedLocationProviderClient.lastLocation
@@ -182,22 +186,14 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
                 if (task.isSuccessful) {
                     val lastKnownLocation: Location? = task.result
                     if (lastKnownLocation != null) {
-                        val userLocation =
-                            LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
-                        map?.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                userLocation,
-                                DEFAULT_ZOOM
-                            )
-                        )
+                        val userLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
+                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, DEFAULT_ZOOM))
+
+                        // Update user's location in Firebase
+                        updateLocationInFirebase(userLocation)
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.")
-                        map?.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                defaultLocation,
-                                DEFAULT_ZOOM
-                            )
-                        )
+                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM))
                         map?.uiSettings?.isMyLocationButtonEnabled = false
                     }
                 } else {
@@ -210,6 +206,47 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun updateLocationInFirebase(location: LatLng) {
+        val userId = auth.currentUser?.uid // Get the current user's unique ID
+
+        userId?.let { uid ->
+            // Reference to the "users" node in your database
+            val usersRef = databaseReference.child("users").child(uid)
+
+            // Fetch the existing user data
+            usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userData = dataSnapshot.getValue(User::class.java)
+
+                    userData?.let { user ->
+                        // Update the user's location
+                        user.location = location
+
+                        // Update the user's data in the database
+                        usersRef.setValue(user)
+                            .addOnSuccessListener {
+                                // Update successful
+                                Toast.makeText(this@CustomerDashboardActivity, "User location updated", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                // Handle update failure
+                                Toast.makeText(this@CustomerDashboardActivity, "Failed to update user location", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle database error
+                    Toast.makeText(this@CustomerDashboardActivity, "Failed to fetch user data", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
+
+
+
 
 }
+
+
 
