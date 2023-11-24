@@ -183,8 +183,6 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
         moveToCurrentLocation()
 
 
-        val userLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
-        addRandomMarkersAroundUserLocation(userLocation)
     }
 
     private fun enableMyLocation() {
@@ -205,6 +203,8 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
                         val userLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
                         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, DEFAULT_ZOOM))
                         updateLocationInFirebase(userLocation)
+                        addRandomMarkersAroundUserLocation(userLocation)
+
 
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.")
