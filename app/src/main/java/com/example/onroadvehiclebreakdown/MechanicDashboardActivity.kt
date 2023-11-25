@@ -268,6 +268,8 @@ class MechanicDashboardActivity : FragmentActivity(), OnMapReadyCallback {
             map?.addMarker(markerOptions)
             markersList.add(markerOptions)
 
+
+
         }
     }
 

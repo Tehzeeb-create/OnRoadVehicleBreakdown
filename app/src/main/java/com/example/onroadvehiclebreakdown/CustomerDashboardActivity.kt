@@ -29,6 +29,7 @@ import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -281,14 +282,17 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
 
     fun addRandomMarkersAroundUserLocation(userLocation: LatLng) {
         val numberOfMarkers = 100
-        val maxDistanceInMeters = 250000 // Adjust this distance as needed
+        val maxDistanceInMeters = 250000
 
         for (i in 0 until numberOfMarkers) {
             val randomDistance = Random.nextDouble(0.0, maxDistanceInMeters.toDouble())
             val randomBearing = Random.nextDouble(0.0, 360.0)
 
             val newLatLng = calculateLatLng(userLocation, randomDistance, randomBearing)
-            val markerOptions = MarkerOptions().position(newLatLng).title("Mechanic $i")
+            val carLogoBitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.mechanic)
+
+            val markerOptions = MarkerOptions().position(newLatLng).icon(carLogoBitmapDescriptor)
+                .title("Customer $i")
             map?.addMarker(markerOptions)
             markersList.add(markerOptions)
         }
