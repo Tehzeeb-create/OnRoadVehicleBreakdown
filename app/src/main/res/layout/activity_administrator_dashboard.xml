@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp"
     tools:context=".AdministratorDashboardActivity">
 
-    <TextView
-        android:id="@+id/textViewWelcomeAdmin"
-        android:layout_width="wrap_content"
+    <!-- Add any other views you need above the TableLayout -->
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome, Administrator!"
-        android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="16dp">
 
-    <!-- Add other components and UI elements for the administrator dashboard as needed -->
+        <!-- Table header -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textStyle="bold"
+                android:padding="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Role"
+                android:textStyle="bold"
+                android:padding="8dp"/>
+        </TableRow>
 
-</RelativeLayout>
+        <!-- Table data will be dynamically added here -->
+
+    </TableLayout>
+
+    <!-- Add any other views you need below the TableLayout -->
+
+</LinearLayout>

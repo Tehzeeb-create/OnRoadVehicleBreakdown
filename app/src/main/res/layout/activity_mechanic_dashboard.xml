@@ -1,24 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    tools:context=".CustomerDashboardActivity">
 
-    <TextView
-        android:id="@+id/mechanic_dashboard_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mechanic Dashboard"
-        android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"/>
 
-    <Button
-        android:id="@+id/logout_button"
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="597dp">
+
+    </fragment>
+
+<!--    <TextView-->
+<!--        android:id="@+id/closestPersonTextView"-->
+<!--        android:layout_width="323dp"-->
+<!--        android:layout_height="122dp"-->
+<!--        android:layout_alignBottom="@+id/myInfoSection"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginTop="7dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_marginBottom="450dp"-->
+<!--        android:layout_toStartOf="@+id/currentLoc"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Distance"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="20dp" />-->
+
+    <ImageButton
+        android:id="@+id/currentLoc"
+        android:layout_width="68dp"
+        android:layout_height="70dp"
+        android:layout_alignRight="@id/mapFragment"
+        android:src="@drawable/gps"
+        android:scaleType="fitCenter"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/DashboardSOS"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/mapFragment"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+
+
+        <Button
+            android:id="@+id/myInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="My Information"
+            android:layout_weight="10"/>
+
+<!--        <Button-->
+<!--            android:id="@+id/sosButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_below="@+id/saveButton"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:text="SOS"-->
+<!--            android:layout_weight="2"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/saveButton"-->
+<!--            app:layout_constraintHorizontal_bias="0.315"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/carEditText"-->
+<!--            app:layout_constraintVertical_bias="0.5" />-->
+
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <LinearLayout
+        android:id="@+id/myInfoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mechanic_dashboard_textView"
-        android:text="Logout"
-        android:layout_marginTop="16dp" />
+        android:layout_alignBottom="@+id/mapFragment"
+        android:layout_marginBottom="18dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/DashboardSOS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:hint="Name" />
+
+        <EditText
+            android:id="@+id/phoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/nameEditText"
+            android:layout_gravity="center_vertical"
+            android:hint="Phone Number" />
+
+        <EditText
+            android:id="@+id/carEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/phoneEditText"
+            android:layout_gravity="center_vertical"
+            android:hint="Car Number" />
+
+        <EditText
+            android:id="@+id/addressEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/carEditText"
+            android:layout_gravity="center_vertical"
+            android:hint="Address" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addressEditText"
+            android:layout_gravity="center"
+            android:text="Save" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
+

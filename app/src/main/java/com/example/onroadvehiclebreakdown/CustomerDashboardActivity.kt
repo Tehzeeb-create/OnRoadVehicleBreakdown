@@ -17,9 +17,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Handler
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -29,6 +32,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import kotlin.math.log
 import kotlin.random.Random
 
 class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
@@ -51,7 +55,8 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
     private lateinit var addressEditText: EditText
 
     private val defaultLocation = LatLng(33.4323, 73.02182)
-
+    val markersList = mutableListOf<MarkerOptions>()
+    private val userLocation = LatLng(33.4323, 73.02182)
 
 
 
@@ -87,6 +92,10 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
         phoneEditText = findViewById(R.id.phoneEditText)
         carEditText = findViewById(R.id.carEditText)
         addressEditText = findViewById(R.id.addressEditText)
+
+
+
+        updateUserLocationOnMap()
 
         CurrentLocation.setOnClickListener {
             moveToCurrentLocation()
@@ -151,19 +160,60 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
             }
         }
         sosButton.setOnClickListener {
-            //closestPersonTextView.text = "SOS, help me"
-        }
 
-        // Calculate and display closest person's name
+
+            sosButton.setOnClickListener {
+                sendSOSMessage(this) // 'this' refers to the activity or fragment context
+            }
+
+
+
+        }
+        addRandomMarkersAroundUserLocation(defaultLocation)
+
         calculateClosestPerson()
     }
 
+    fun sendSOSMessage(context: Context) {
+        val toast = Toast.makeText(context, "SOS Message Broadcasted", Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+
+        Handler().postDelayed({
+            toast.cancel()
+        }, 2000)
+    }
     private fun moveToCurrentLocation() {
         updateUserLocationOnMap()
     }
     private fun calculateClosestPerson() {
-        // This is where you implement the logic to find the closest person and update the UI
+        val userLocation = getCurrentUserLocation() ?: return
+        var closestPerson: MarkerOptions? = null
+        var minDistance = Double.MAX_VALUE
+
+        // Iterate over all markers in the list
+        for (markerOptions in markersList) {
+            val markerLocation = markerOptions.position
+            val distance = calculateDistance(userLocation, markerLocation)
+            if (distance < minDistance) {
+                minDistance = distance
+                closestPerson = markerOptions
+            }
+        }
+
+        closestPerson?.let {
+            val closestPersonName = it.title
+            val distanceInKilometers = (minDistance / 1000).toInt()
+            val closestPersonTextView = findViewById<TextView>(R.id.closestPersonTextView)
+            closestPersonTextView.text = "Closest Mechanic: $closestPersonName\nDistance: $distanceInKilometers kilometers"
+        }
     }
+
+
+    private fun getCurrentUserLocation(): LatLng? {
+        return userLocation
+    }
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -191,7 +241,6 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
         }
     }
 
-
     fun updateUserLocationOnMap() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             val locationResult: Task<Location> = fusedLocationProviderClient.lastLocation
@@ -204,8 +253,6 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
                         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, DEFAULT_ZOOM))
                         updateLocationInFirebase(userLocation)
                         addRandomMarkersAroundUserLocation(userLocation)
-
-
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.")
                         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM))
@@ -232,20 +279,21 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun addRandomMarkersAroundUserLocation(userLocation: LatLng) {
-        val numberOfMarkers = 20
-        val maxDistanceInMeters = 5000 // Adjust this distance as needed
+    fun addRandomMarkersAroundUserLocation(userLocation: LatLng) {
+        val numberOfMarkers = 100
+        val maxDistanceInMeters = 250000 // Adjust this distance as needed
 
         for (i in 0 until numberOfMarkers) {
             val randomDistance = Random.nextDouble(0.0, maxDistanceInMeters.toDouble())
             val randomBearing = Random.nextDouble(0.0, 360.0)
 
             val newLatLng = calculateLatLng(userLocation, randomDistance, randomBearing)
-
-            // Add a marker for the new coordinates
-            map?.addMarker(MarkerOptions().position(newLatLng).title("Mechanic $i"))
+            val markerOptions = MarkerOptions().position(newLatLng).title("Mechanic $i")
+            map?.addMarker(markerOptions)
+            markersList.add(markerOptions)
         }
     }
+
 
     private fun calculateLatLng(startLatLng: LatLng, distance: Double, bearing: Double): LatLng {
         val earthRadius = 6371000.0 // Earth's radius in meters
@@ -267,8 +315,25 @@ class CustomerDashboardActivity : FragmentActivity(), OnMapReadyCallback {
         return LatLng(Math.toDegrees(lat2), Math.toDegrees(lon2))
     }
 
+    private fun calculateDistance(start: LatLng, end: LatLng): Double {
+        val earthRadius = 6371000.0 // Earth's radius in meters
 
+        val lat1 = Math.toRadians(start.latitude)
+        val lon1 = Math.toRadians(start.longitude)
+        val lat2 = Math.toRadians(end.latitude)
+        val lon2 = Math.toRadians(end.longitude)
 
+        val dLat = lat2 - lat1
+        val dLon = lon2 - lon1
+
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+        return earthRadius * c
+    }
 }
 
 
